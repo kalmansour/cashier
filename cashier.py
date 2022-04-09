@@ -1,38 +1,51 @@
 def get_invoice_items(items):
-    # Items is a dictionary with a quantity and price key, and a name key
-    # Return a list of all the invoice line items in the following format:
-    # quantity name subtotal currency
-    # For example, if we had the following:
-    # [
-    #   {'name': 'Apple', 'quantity': 1, price: 0.2 },
-    #   {'name': 'Orange', 'quantity': 4, price: 0.3 },
-    # ]
-    # We should return the following:
-    # ['1 Apple 0.200KD', '4 Orange 1.200KD']
-    # ---
-    # Write your code here
+    invoice_items = [] 
+    for item in items:
+        item_quantity = item["quantity"]
+        item_name = item["name"]
+        item_subtotal = item["quantity"]*item["price"]
+        values = f"{item_quantity} {item_name} {item_subtotal}KD"
+        invoice_items.append(values)
+    return invoice_items
     ...
 
 
 def get_total(items):
-    # Items is a dictionary with a quantity and price key
-    # Calculate the total of all items in the cart
-    # Write your code here
+    total = 0
+    subtotals = []
+    for item in items:
+        item_subtotal = item["quantity"]*item["price"]
+        subtotals.append(item_subtotal)
+    total = sum(subtotals)
+    return total
     ...
 
 
 def print_receipt(invoice_items, total):
-    # invoice_items will be the list of formatted items received from
-    # `get_invoice_items`, and total will be a float. Print out a nice receipt
-    # displaying a title, all the invoice items on separate lines, and the
-    # total at the end.
-    # ---
-    # Write your code here
+    print("""\
+-------------------
+receipt
+-------------------""")
+    for count,ele in enumerate(invoice_items):
+        print(ele)
+    print("-------------------")
+    print(f'Total price: {total}KD')
     ...
 
 
 def main():
-    # Write your main logic here
+    items = []
+    while True:
+        item_name = input("Item (enter \"done\" when finished):")
+        if item_name == "done":
+            break
+        else:
+            item_price = float(input("Item price:"))
+            item_quantity = int(input("Item quantity:"))
+            items.append({'name':item_name,'price':item_price,'quantity':item_quantity})
+    invoice_items = get_invoice_items(items)
+    total = get_total(items)
+    print_receipt(invoice_items, total)
     ...
 
 
